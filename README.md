@@ -1,4 +1,7 @@
-# 智能多功能工具箱平台（www-vue3 + Spring Boot）
+//git config --global user.name "Nurkic4"
+//git config --global user.email "nurkic4@example.com"
+
+# 智能多功能工具箱平台
 
 ## 项目简介
 本项目为一站式智能工具箱平台，采用前后端分离架构，前端基于 Vue3、TypeScript、Vite、Element Plus，后端采用 Spring Boot、MySQL，集成多种第三方API（如AI对话、天气、股票、B站视频解析等），为用户提供文件处理、数据可视化、AI助手、网络检测等多样化服务。
@@ -51,4 +54,3 @@
 - 更多接口和功能说明详见后端API文档。
 
 ---
-如需二次开发或部署，建议详细阅读源码及接口文档。如有问题欢迎 issue！ 
