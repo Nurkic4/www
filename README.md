@@ -1,5 +1,3 @@
-//git config --global user.name "Nurkic4"
-//git config --global user.email "nurkic4@example.com"
 
 # 智能多功能工具箱平台
 

@@ -406,6 +406,7 @@ curl -X POST http://localhost:8082/api/sparkai \
     ]
   }'
 ```
+<<<<<<< HEAD
 
 ## 前端集成建议
 1. 登录成功后保存JWT Token到localStorage或sessionStorage
@@ -648,3 +649,292 @@ const ChangePassword = () => {
   );
 };
 ``` 
+=======
+---
+
+### 8. 文章管理接口
+
+#### 8.1 创建文章
+- **接口地址**: `POST /api/article/create`
+- **请求头**: `Content-Type: application/json`，`Authorization: Bearer {token}`
+- **请求参数**:
+```json
+{
+  "title": "string",         // 标题，必填
+  "content": "string",       // 内容，必填
+  "coverImage": "string",   // 封面图片，可选
+  "status": "string",       // 状态，可选，默认"DRAFT"
+  "images": [                // 图片列表，可选
+    {
+      "imageData": "string", // base64图片数据
+      "imageName": "string", // 图片名
+      "sortOrder": 0          // 排序，可选
+    }
+  ]
+}
+```
+- **成功响应** (200):
+```json
+{
+  "id": 1,
+  "title": "xxx",
+  "status": "DRAFT",
+  "message": "文章创建成功"
+}
+```
+- **失败响应** (401/400):
+```json
+"未登录"
+"创建文章失败: {错误信息}"
+```
+
+#### 8.2 获取文章列表
+- **接口地址**: `GET /api/article/list`
+- **请求参数**:
+  - `page` 页码，默认1
+  - `size` 每页数量，默认10
+  - `status` 状态，可选
+  - `authorId` 作者ID，可选
+  - `keyword` 关键字，可选
+- **成功响应** (200):
+```json
+{
+  "total": 100,
+  "pages": 10,
+  "current": 1,
+  "size": 10,
+  "records": [
+    {
+      "id": 1,
+      "title": "xxx",
+      "authorId": 1,
+      "authorName": "xxx",
+      "authorAvatar": "url",
+      "coverImage": "url",
+      "status": "DRAFT",
+      "viewCount": 0,
+      "images": [/*...*/]
+    }
+  ]
+}
+```
+- **失败响应** (400):
+```json
+"获取文章列表失败: {错误信息}"
+```
+
+#### 8.3 获取文章详情
+- **接口地址**: `GET /api/article/{id}`
+- **请求头**: `Authorization: Bearer {token}`（可选）
+- **成功响应** (200):
+```json
+{
+  "id": 1,
+  "title": "xxx",
+  "content": "...",
+  "authorId": 1,
+  "authorName": "xxx",
+  "authorAvatar": "url",
+  "coverImage": "url",
+  "status": "DRAFT",
+  "viewCount": 0,
+  "images": [/*...*/],
+  "isLiked": false
+}
+```
+- **失败响应** (404/400):
+```json
+"获取文章详情失败: {错误信息}"
+```
+
+#### 8.4 更新文章
+- **接口地址**: `PUT /api/article/{id}`
+- **请求头**: `Content-Type: application/json`，`Authorization: Bearer {token}`
+- **请求参数**: 同创建文章
+- **成功响应** (200):
+```json
+"文章更新成功"
+```
+- **失败响应** (401/403/404/400):
+```json
+"未登录"
+"无权限修改此文章"
+"文章不存在"
+"更新文章失败: {错误信息}"
+```
+
+#### 8.5 删除文章
+- **接口地址**: `DELETE /api/article/{id}`
+- **请求头**: `Authorization: Bearer {token}`
+- **成功响应** (200):
+```json
+"文章删除成功"
+```
+- **失败响应** (401/403/404/400):
+```json
+"未登录"
+"无权限删除此文章"
+"文章不存在"
+"删除文章失败: {错误信息}"
+```
+
+#### 8.6 提交审核
+- **接口地址**: `POST /api/article/{id}/submit`
+- **请求头**: `Authorization: Bearer {token}`
+- **成功响应** (200):
+```json
+"文章已提交审核"
+```
+- **失败响应** (401/403/400):
+```json
+"未登录"
+"无权限提交此文章"
+"只有草稿状态的文章才能提交审核"
+"提交审核失败: {错误信息}"
+```
+
+#### 8.7 获取待审核文章列表（管理员）
+- **接口地址**: `GET /api/article/pending`
+- **请求头**: `Authorization: Bearer {token}`
+- **请求参数**: `page`、`size`
+- **成功响应** (200): 同文章列表
+- **失败响应** (401/403/400):
+```json
+"未登录"
+"无权限访问"
+"获取待审核文章失败: {错误信息}"
+```
+
+#### 8.8 审核文章（管理员）
+- **接口地址**: `POST /api/article/{id}/review`
+- **请求头**: `Content-Type: application/json`，`Authorization: Bearer {token}`
+- **请求参数**:
+```json
+{
+  "reviewStatus": "APPROVED/REJECTED", // 审核状态
+  "reviewComment": "string"             // 审核意见，可选
+}
+```
+- **成功响应** (200):
+```json
+"审核完成"
+```
+- **失败响应** (401/400):
+```json
+"未登录"
+"审核失败: {错误信息}"
+```
+
+#### 8.9 点赞/取消点赞
+- **接口地址**: `POST /api/article/{id}/like` 点赞
+- **接口地址**: `DELETE /api/article/{id}/like` 取消点赞
+- **请求头**: `Authorization: Bearer {token}`
+- **成功响应** (200):
+```json
+"点赞成功"
+"取消点赞成功"
+```
+- **失败响应** (401/400):
+```json
+"未登录"
+"点赞失败: {错误信息}"
+"取消点赞失败: {错误信息}"
+```
+
+#### 8.10 增加浏览次数
+- **接口地址**: `POST /api/article/{id}/view`
+- **成功响应** (200):
+```json
+"浏览次数已更新"
+```
+- **失败响应** (400):
+```json
+"更新浏览次数失败: {错误信息}"
+```
+
+#### 8.11 获取我的文章
+- **接口地址**: `GET /api/article/my`
+- **请求头**: `Authorization: Bearer {token}`
+- **请求参数**: `page`、`size`、`status`（可选）
+- **成功响应** (200): 同文章列表
+- **失败响应** (401/400):
+```json
+"未登录"
+"获取我的文章失败: {错误信息}"
+```
+
+---
+
+### 9. 网络工具接口
+
+#### 9.1 通用HTTP代理
+- **接口地址**: `GET /api/proxy`
+- **请求参数**:
+  - `url` 目标URL，必填
+  - `method` HTTP方法，可选，默认GET
+- **成功响应** (200):
+```json
+{
+  "status": 200,
+  "headers": {"Content-Type": "text/html"},
+  "duration": 123,
+  "body": "..." // 或 body_base64
+}
+```
+- **失败响应** (500):
+```json
+{"error": "错误信息"}
+```
+
+#### 9.2 带宽测速
+- **下载**: `GET /api/speedtest/download?size=10485760`  // 默认10MB
+- **上传**: `POST /api/speedtest/upload`，form-data参数：file
+- **成功响应** (200):
+```json
+{"size": 10485760, "duration": 1234}
+```
+
+#### 9.3 获取公网IP
+- **接口地址**: `GET /api/public-ip`
+- **成功响应** (200):
+```json
+{"ip": "1.2.3.4"}
+```
+
+#### 9.4 DNS信息查询
+- **接口地址**: `GET /api/dns-info?domain=example.com`
+- **成功响应** (200):
+```json
+{"ips": ["1.2.3.4"], "duration": 12, "dnsServers": ["8.8.8.8"]}
+```
+
+#### 9.5 端口连通性检测
+- **接口地址**: `GET /api/port-test?host=example.com&port=80`
+- **成功响应** (200):
+```json
+{"host": "example.com", "port": 80, "reachable": true, "duration": 10}
+```
+- **失败响应** (200):
+```json
+{"host": "example.com", "port": 80, "reachable": false, "duration": 10, "error": "错误信息"}
+```
+
+---
+
+### 10. 测试接口
+
+#### 10.1 Hello接口
+- **接口地址**: `GET /api/test/hello`
+- **成功响应** (200):
+```json
+{"message": "Hello World", "timestamp": 1710000000000}
+```
+
+#### 10.2 文章测试接口
+- **接口地址**: `GET /api/test/articles`
+- **成功响应** (200):
+```json
+{"total": 0, "pages": 0, "current": 1, "size": 10, "records": []}
+```
+// ... existing code ...
+>>>>>>> 3700a6a (init: 后端代码和文档)

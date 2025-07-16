@@ -1,3 +1,4 @@
+
 # 依赖目录
 node_modules/
 
@@ -28,3 +29,22 @@ Thumbs.db
 *.ntvs*
 *.njsproj
 *.sln 
+
+# Java
+/target/
+*.log
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 配置
+src/main/resources/application.yml
+src/main/resources/application.properties 
+
