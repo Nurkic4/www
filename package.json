@@ -1,0 +1,37 @@
+{
+  "name": "www-vue3",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@lottiefiles/lottie-player": "^2.0.12",
+    "@vueup/vue-quill": "^1.2.0",
+    "axios": "^1.6.0",
+    "browser-image-compression": "^2.0.2",
+    "echarts": "^5.6.0",
+    "element-plus": "^2.10.3",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
+    "lottie-web": "^5.13.0",
+    "marked": "^16.0.0",
+    "pinia": "^3.0.3",
+    "vee-validate": "^4.15.1",
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.0",
+    "vue3-lottie": "^3.3.1",
+    "yup": "^1.6.1"
+  },
+  "devDependencies": {
+    "@stagewise-plugins/vue": "^0.4.7",
+    "@stagewise/toolbar-vue": "^0.4.9",
+    "@types/node": "^24.0.14",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "typescript": "^5.8.3",
+    "vite": "^5.4.19",
+    "vue-tsc": "^3.0.1"
+  }
+}
